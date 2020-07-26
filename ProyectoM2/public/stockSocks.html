@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css2?family=Lexend+Tera&family=Permanent+Marker&family=Sedgwick+Ave+Display&display=swap" rel="stylesheet"> 
+    <link rel="stylesheet" href="pocketSock.css">
+    <title>Stock</title>
+</head>
+
+<body>
+<header>
+
+
+    <div class="logo">
+        <p>La Pata socks</p>
+        <img src="laPata.svg" alt="">
+    </div>  
+
+<div class="titulo">
+    <p>Stock</p>
+</div>
+
+<div>
+<a href="index.html">Collections</a>
+</div>
+
+</header>
+<main>
+
+<input type="text" id="modelo" placeholder="model">
+<input type="text" id="tipo" placeholder=" type">
+<input type="text" id="talla" placeholder="size">
+<input type="text" id="qty" placeholder="qty">
+<input type="text" id="material" placeholder="material">
+<input type="text" id="price" placeholder="price">
+<input type="text" id="image" placeholder="image">
+
+        
+        
+        <a href="#" onclick="addSock()">add Socks</a>
+        <div id="sockStock">
+            
+            
+            
+        </div>
+    </main>
+        
+
+
+    <footer>
+        <div class="footer">
+
+            <div class="footerDer">
+
+                <div class="listos">
+                    <h5>Mundos</h5>
+                    <ul>
+                        <li>Eventos</li>
+                        <li>Noticias</li>
+                        <li>Colaboradores</li>
+                    </ul>
+                </div>
+
+                <div class="listos">
+                    <h5>Información</h5>
+                    <ul>
+                        <li>Api</li>
+                        <li>Tips</li>
+                        <li>blog</li>
+                    </ul>
+                </div>
+                <div class="listos">
+                    <h5>Atención a clientes</h5>
+                    <ul>
+                        <li>oficinas</li>
+                        <li>agencia</li>
+                        <li>viajes</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footerizq">
+
+                <div class="logo">
+                    <img src="laPata.svg" alt="">
+                    <p> <strong> La Pata socks</strong></p>
+                </div>
+
+
+                <div class="foto">
+                    <img src="facebook.svg" alt="">
+                    <img src="insta.svg" alt="">
+                    <img src="twitter.svg" alt="">
+                    <img src="reddit.svg" alt="">
+
+                </div>
+
+            </div>
+        </div>
+
+    </footer>
+        <script>
+            
+            fetch('/apipocket/socks')
+            .then(function sockx(sockx) {
+                return sockx.json()
+                
+            })
+            
+            .then(function stock(stock) {
+                let cadenaStock = ""
+                let erase;
+                for (let i = 0; i < stock.length; i++) {
+                    erase = stock[i]._id
+                    cadenaStock += `<div class=stock><div><h2>${stock[i].model}</h2>
+        <p>Category: ${stock[i].type}</p>
+        <p>Size: ${stock[i].size}</p>
+        <p>Qty: ${stock[i].qty}</p>
+        <p>Material: ${stock[i].material}</p>
+        <p>Price:${stock[i].price}$</p>
+        <a href="" onclick="eraseSock('${erase}')">Erase</a>
+        <a href="" onclick="modificar()">Change qty</a></div>
+            <img src="${stock[i].image}" alt=""></div>`
+                }
+                document.getElementById("sockStock").innerHTML = cadenaStock;
+            })
+
+        function addSock() {
+
+            event.preventDefault();
+
+            let modelo = document.getElementById("modelo").value;
+            let tipo = document.getElementById("tipo").value;
+            let talla = document.getElementById("talla").value;
+            let qty = document.getElementById("qty").value;
+            let material = document.getElementById("material").value;
+            let price = document.getElementById("price").value;
+            let image = document.getElementById("image").value;
+
+            let sock = {
+                model: modelo,
+                type: tipo,
+                size: talla,
+                qty: qty,
+                material: material,
+                price: price,
+                image: image
+            }
+
+            fetch('/api/sock', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(sock)
+            })
+                .then(function datos(datos) {
+
+                    return datos.json()
+
+                })
+                .then(function respuesta(respuesta) {
+                    let sockstring = "";
+                    let borrar = "";
+
+                    console.log(respuesta)
+
+                    for (let i = 0; i < respuesta.length; i++) {
+                        borrar = respuesta[i]._id
+                        sockstring += `<div class=stock><div><h2>${respuesta[i].model}</h2>
+        <p>Category:${respuesta[i].type}</p>
+        <p>Size:${respuesta[i].size}</p>
+        <p>Qty:${respuesta[i].qty}</p>
+        <p>Material:${respuesta[i].material}</p>
+        <p>Price:${respuesta[i].price}$</p>
+        <a href="" onclick="eraseSock('${borrar}')">Erase</a>
+        <a href="" onclick="modificar()">Change qty</a>
+        </div>
+        <img src="${respuesta[i].image}" alt="">
+        </div>
+        `
+                    }
+                    document.getElementById("sockStock").innerHTML = sockstring
+                })
+        }
+
+
+
+        function eraseSock(sucks) {
+            event.preventDefault();
+            sucks = sucks
+            console.log(sucks)
+
+            fetch(`/borrar/${sucks}`, {
+                method: 'DELETE'
+            })
+
+            // con el fetch delete no puedo ver lo que me manda el servidor asi que ago un fecth de get para ver los datos
+
+            fetch('/apipocket/socks')
+                .then(function sockx(sockx) {
+                    return sockx.json()
+
+                })
+
+                .then(function stock(stock) {
+                    let cadenaStock = ""
+                    let erase;
+                    for (let i = 0; i < stock.length; i++) {
+                        erase = stock[i]._id
+                        cadenaStock += `<div class=stock><div><h2>${stock[i].model}</h2>
+        <p>Category:${stock[i].type}</p>
+        <p>Size:${stock[i].size}</p>
+        <p>Qty:${stock[i].qty}</p>
+        <p>Material:${stock[i].material}</p>
+        <p>Price:${stock[i].price}$</p>
+        <a  herf="" onclick="eraseSock('${erase}')">Erase</a>
+        <a href="" onclick="modificar()">Change qty</a></div>
+            <img src="${stock[i].image}" alt=""></div>`
+                    }
+                    document.getElementById("sockStock").innerHTML = cadenaStock;
+                })
+
+        }
+
+        function modificar() {
+            event.preventDefault();
+            fetch('/apipocket/socks')
+                .then(function sockx(sockx) {
+                    return sockx.json()
+
+                })
+
+                .then(function stock(stock) {
+                    let cadenaStock = ""
+                    let erase;
+                    for (let i = 0; i < stock.length; i++) {
+                        erase = stock[i]._id
+                        cadenaStock += `<div class=stock><div><h2>${stock[i].model}</h2>
+        <p>Category:${stock[i].type}</p>
+        <p>Size:${stock[i].size}</p>
+        <input type="text" id="qtys${erase}" placeholder="new qty${[i]}">
+        <p>Material:${stock[i].material}</p>
+        <p>Price:${stock[i].price}$</p>
+        <a  herf="" onclick="eraseSock('${erase}')">Erase</a>
+        <a href="" onclick="nuevaCantidad('${erase}')"> Change qty</a>
+        </div>
+            <img src="${stock[i].image}" alt=""></div>`
+                    }
+                    document.getElementById("sockStock").innerHTML = cadenaStock;
+                   console.log( parseInt(document.getElementById("qtys").value))
+                })
+
+     
+
+        }
+
+
+        function nuevaCantidad(ids) {
+
+            event.preventDefault();
+            let qtys = parseInt(document.getElementById("qtys"+ids).value);
+
+
+            fetch(`/api/${qtys}/${ids}`, {
+                method: 'PUT'
+            })
+
+                .then(function socks(socks) {
+                    return socks.json();
+
+                })
+
+
+                .then(function stock(stock) {
+
+                    let cadenaStock = ""
+                    let erase;
+                    for (let i = 0; i < stock.length; i++) {
+                        erase = stock[i]._id
+                        cadenaStock += `<div class=stock><div><h2>${stock[i].model}</h2>
+        <p>Category:${stock[i].type}</p>
+        <p>Size:${stock[i].size}</p>
+        <p>Qty:${stock[i].qty}</p>
+        <p>Material:${stock[i].material}</p>
+        <p>Price:${stock[i].price}$</p>
+        <a  herf="" onclick="eraseSock('${erase}')">Erase</a>
+        <a href="" onclick="modificar()">Change qty</a></div>
+            <img src="${stock[i].image}" alt=""></div>`
+                    }
+                    document.getElementById("sockStock").innerHTML = cadenaStock;
+
+
+                    console.log(stock)
+
+
+
+                })
+
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+            // .then(function datos(datos) {
+
+                //     return datos.json()
+
+                // })
+
+
+//  .then(function respuesta(respuesta) {
+//     let sockstring = "";
+//     console.log(respuesta)
+
+//  for (let i = 0; i < respuesta.length; i++) {
+//  document.getElementById("sockStock").innerHTML +=
+//  `<h1>${respuesta[i].model}</h1>
+//  <p>${respuesta[i].type}</p>
+// <p>${respuesta[i].size}</p>
+//        <p>${respuesta[i].qty}</p>
+//         <p>${respuesta[i].material}</p>
+//                  <p>${respuesta[i].price}</p>
+//         <a onclick="borrarCalcetin()">erase</a>`
+//                     }
+//                     document.getElementById("sockStock").innerHTML = sockstring
+//                 })
+
+
+
+// fetch('/api/anyadir',{
+//          method:'POST',
+//          headers:{'Content-Type': 'application/json'},
+//          body:JSON.stringify(mesa) })
+    </script>
+
+
+
+
+
+</body>
+
+</html>

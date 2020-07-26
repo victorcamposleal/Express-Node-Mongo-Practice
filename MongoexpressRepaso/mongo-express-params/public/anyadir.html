@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <!-- ESTE HTML LO USAREMOS ÚNICAMENTE PARA AGREGAR UN NUEVO LIBRO -->
+
+    <a href="index.html">Ver libros</a>
+    <a href="editar.html">Editar un libro</a>
+    <a href="eliminar.html">Eliminar un libro</a>
+    <br>
+    <!-- creamos un input de tipo texto con un id, donde el usuario escribirá el título del libro que quiere añadir -->
+    <!-- creamos también un botón que ejecutará una función en JavaScript cuando haga click -->
+    <input type="text" id="titulo">
+    <button onclick="anyadirLibro()">Añadir libro</button>
+
+    <script>
+
+        //definimos la funcion anyadirLibro
+        function anyadirLibro() {
+            //recogemos el valor introducido en el input
+            let titulo = document.getElementById('titulo').value;
+            console.log(titulo)
+
+            //hacemos un fetch a la ruta definida en el servidor. como el título llega en la URL, se lo añadimos
+            //el método que queremos usar es POST, por lo que tenemos que indicarlo
+            fetch(`/api/nuevoLibro/${titulo}`, {
+                method: "POST"
+            }).then(function (respuesta) {
+                return respuesta.json();
+            }).then(function (mensaje) {
+                //como sabemos que nos va a llegar un mensaje, mostramos ese mensaje en consola.
+                console.log(mensaje);
+                
+
+
+            })
+        }
+    </script>
+
+</body>
+
+</html>

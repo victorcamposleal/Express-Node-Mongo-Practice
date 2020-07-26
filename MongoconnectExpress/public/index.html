@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <input type="text" name="planeta" id="planeta" placeholder=planet>
+    <input type="number" name="distanciaRecorrida" id="distanciaRecorrida" placeholder="distance">
+    <input type="text" name="planeta" id="atmosfera">
+    <button onclick="enviarDatos()">click</button>
+
+    <script>
+let planeta=document.getElementById("planeta").value;
+let distanciaRecorrida=document.getElementById("distanciaRecorrida").value;
+let atmosfera=document.getElementById("atmosfera").value;
+
+let nave={
+    planeta,
+    distanciaRecorrida,
+    atmosfera
+}
+
+fetch('/nuevaNave',{
+    method:"POST",
+    headers:{'Content-Type':'application/json'
+},
+body:JSON.stringify(nave)
+
+})
+.then(function response(response) {
+
+    return response.json()
+    
+})
+.then(function datos(datos) {
+    console.log(datos)
+    
+})
+
+
+    </script>
+</body>
+</html>

@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <input type="text" id="nombre">
+    <input type="text" id="apellido">
+    <input type="text" id="edad">
+    <button onclick="Borrar()">borra uno</button>
+    <div id="persons">
+
+
+    </div>
+    <script>
+        function Borrar() {
+
+            nombre = document.getElementById("nombre").value;
+            apellido = document.getElementById("apellido").value;
+            edad = document.getElementById("edad").value;
+
+            let persona = {
+                nombre: nombre,
+                apellido: apellido,
+                edad: edad
+            }
+
+            fetch('/personas',
+                {
+                    method: 'DELETE',
+                    headers: { 'Content-Type': 'application/json'
+                 },
+                    body: JSON.stringify(persona),
+                }
+                )
+        //         .then(function responses(responses) {
+        //             return responses.json()
+
+        //         }
+        //         )
+        //         .then(function datas(datas) {
+        //             console.log(datas)
+        //           for (let i = 0; i < datas.length; i++) {
+        //                 document.getElementById("resultados").innerHTML += `${datas[i].nombre}`;}});
+    
+        .then(function response(response) {
+                    return response.json()
+
+                })
+                .then(function data(data) {
+                    console.log(data)
+document.getElementById("persons").innerHTML="";
+                    for (let i = 0; i < data.length; i++) {
+                        acumulado += `<h1>${data[i].nombre}</h1> <h1>${data[i].apellido}</h1> 
+                        <h1>${data[i].edad}</h1>`
+                        }
+  document.getElementById("persons").innerHTML=`${acumulado}`
+
+
+                });
+
+
+
+
+    
+    
+    }
+
+
+    </script>
+</body>
+
+</html>

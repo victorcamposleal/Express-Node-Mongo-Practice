@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <!-- ESTE HTML LO USAREMOS ÚNICAMENTE PARA ELIMINAR UN LIBRO -->
+    <a href="index.html">Ver libros</a>
+    <a href="anyadir.html">Añadir un nuevo libro</a>
+    <a href="editar.html">Editar un libro</a>
+    <br>
+    <!-- creamos un input de tipo texto con un id, donde el usuario escribirá el título del libro que quiere eleiminar -->
+    <!-- creamos también un botón que ejecutará una función en JavaScript cuando haga click -->
+
+    <input type="text" id="titulo">
+    <button onclick="eliminarLibro()">Eliminar libro</button>
+
+    <script>
+        function eliminarLibro(){
+             //recogemos el titulo escrito en el input
+             let titulo = document.getElementById('titulo').value;
+            
+            //hacemos un fetch a la ruta definida en el servidor. como el título llega en la URL, se lo añadimos
+            //el método que queremos usar es DELETE, por lo que tenemos que indicarlo
+            fetch(`/api/borrarLibro/${titulo}`, {
+                method: 'DELETE'
+            }).then(function (respuesta) {
+                return respuesta.json();
+            }).then(function (mensaje) {
+                //como sabemos que nos va a llegar un mensaje, mostramos ese mensaje en consola.
+                console.log(mensaje);
+            })
+        }
+    </script>
+
+</body>
+</html>

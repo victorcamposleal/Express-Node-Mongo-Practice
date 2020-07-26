@@ -1,0 +1,31 @@
+DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h1>Pedimos personas</h1>
+    <ul id="personas"></ul>
+    <script>
+        fetch('/api/personas', {
+            method:'GET'
+        })
+        .then(function(respuesta) {
+            return respuesta.json();
+        })
+        .then(function(personas) {
+            let mensaje = '';
+            for(let i = 0; i < personas.length; i++) {
+                let nombre = personas[i].nombre;
+                let apellido = personas[i].apellido;
+                let edad = personas[i].edad;
+                mensaje += `<li>${nombre} ${apellido} ${edad}</li>`
+            }
+            document.getElementById('personas').innerHTML = mensaje;
+        });
+    </script>
+
+</body>
+</html>

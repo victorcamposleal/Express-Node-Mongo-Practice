@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+
+    <h1>Welcome to boodlands Burger</h1>
+    <div>
+        <h2>En la compra de un menu incluye una bebida y papas</h2>
+        <select name="menu" id="listadomenus" onchange="funcionmenu()">
+            <option>elige un menu</option>
+        </select>
+        <select name="bebidas" id="listadobebidamenu" onchange="funcionbebidasm()">
+            <option>elige una bedbida</option>
+        </select>
+        <button id="recoger pedido"> pick order</button>
+</div>
+
+    <div>
+<h3>Hamburguesas</h3>
+        <select name="hamburguesas" id="listadohamburguesas" onchange="funcionhamburguesa()">
+            <option>elige una hamburguesa</option>
+        </select>
+        eleccion de papas? yes  <input type="checkbox"> no  <input type="checkbox">
+<button id="recoger pedido"> pick order</button>
+    </div>
+    <div>
+    <h3>choices</h3>
+      <select name="bebidas" id="listadobebidas" onchange="funcionbebidas()">
+            <option>elige una bedbida</option>
+        </select>
+
+        <select name="hamburguesas" id="listadohamburguesasbebida" onchange="funcionhamburguesa()">
+            <option>elige una hamburguesa</option>
+        </select>
+        <button id="recoger pedido"> pick order</button>
+    </div>
+    <a onclick="funcionAcabar()">Acabar el pedido</a>
+    <script>
+
+
+        fetch('api/boodlands')
+            .then(function respuesta(respuesta) {
+                return respuesta.json()
+            }
+            )
+
+            .then(function datos(datos) {
+                console.log(datos.menus.nombre)
+
+                for (let i = 0; i < datos.menus.length; i++) {
+                    document.getElementById('listadomenus').innerHTML += `<option >${datos.menus[i].nombre} y el precio es ${datos.menus[i].precio}</option>`
+                }
+                for (let i = 0; i < datos.hamburguesas.length; i++) {
+                    document.getElementById('listadohamburguesas').innerHTML += `<option >${datos.hamburguesas[i].nombre} y el precio es ${datos.hamburguesas[i].precio}</option>`
+                }
+
+                for (let i = 0; i < datos.bebidas.length; i++) {
+                    document.getElementById('listadobebidas').innerHTML += `<option >${datos.bebidas[i].nombre} y el precio es ${datos.bebidas[i].precio}</option>`
+                }
+            })
+        let menu;
+        let bebida;
+        let patata
+        function funcionmenu() {
+            menu = document.getElementById('listadomenus').value;
+
+            fetch('api/boodlands')
+                .then(function respuesta(respuesta) {
+                    return respuesta.json()
+                }
+                )
+
+                .then(function datos(datos) {
+                    console.log(datos.menus.nombre)
+
+
+
+                    for (let i = 0; i < datos.bebidas.length; i++) {
+                        document.getElementById('listadobebidamenu').innerHTML += `<option >${datos.bebidas[i].nombre}</option>`
+                    }
+                })
+
+        }
+
+        function funcionbebidas() {
+            menu = document.getElementById('listadomenus').value;
+
+            fetch('api/boodlands')
+                .then(function respuesta(respuesta) {
+                    return respuesta.json()
+                }
+                )
+
+                .then(function datos(datos) {
+                    console.log(datos.menus.nombre)
+
+                  for (let i = 0; i < datos.hamburguesas.length; i++) {
+                    document.getElementById('listadohamburguesasbebida').innerHTML += `<option >${datos.hamburguesas[i].nombre} y el precio es ${datos.hamburguesas[i].precio}</option>`
+                }
+            })
+
+        }
+
+    </script>
+</body>
+
+</html>

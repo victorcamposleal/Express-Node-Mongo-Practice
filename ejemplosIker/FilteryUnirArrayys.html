@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+let numeros1 = [4, 8, 13, 15, 16, 23];
+let ultimoNumero = 42;
+
+let numeroAEliminar = 13;
+// filter devuelve un array con todos los elementos
+// que al ejecutar la función devuelva true
+
+// con función normal
+// numeros1 = numeros1.filter(function(elemento) {
+//     if(elemento === numeroAEliminar) {
+//         return false;
+//     } else {
+//         return true;
+//     }
+// });
+
+// // con función flecha
+// numeros1 = numeros1.filter((elemento) => {
+//     if(elemento === numeroAEliminar) {
+//         return false;
+//     } else {
+//         return true;
+//     }
+// });
+
+// // con función flecha, if else en menos lineas
+// numeros1 = numeros1.filter((elemento) => {
+//     return elemento !== numeroAEliminar;
+// });
+
+// con función flecha, if else en menos lineas
+numeros1 = numeros1.filter(n => n !== numeroAEliminar);
+
+console.log(numeros1);
+
+let todosLosNumeros = [...numeros1, ultimoNumero];
+console.log(todosLosNumeros
+
+
+    </script>
+</body>
+</html>

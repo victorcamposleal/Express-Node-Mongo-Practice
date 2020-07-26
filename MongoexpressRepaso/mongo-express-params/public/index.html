@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <!-- ESTE HTML ÚNICAMENTE LO USAREMOS PARA VER LOS LIBROS QUE TENEMOS   -->
+
+    <!-- creamos enlaces a diferentes páginas html, desde las que añadiremos, editaremos o eliminaremos libros -->
+    <a href="anyadir.html">Añadir un nuevo libro</a>
+    <a href="editar.html">Editar un libro</a>
+    <a href="eliminar.html">Eliminar un libro</a>
+    <!-- creamos un div con un id, donde mostraremos la lista de libros de la base de datos -->
+    <div id="libros"></div>
+
+
+    <script>
+        let librosDiv = document.getElementById('libros');
+        //hacemos un fetch al servidor al método indicado para que nos devuelva todos los libros
+        fetch('/api/libros')
+        .then(function(respuesta){
+            return respuesta.json();
+        }).then(function(libros){
+            //pintamos en el HTML los libros que nos llegan
+            let librosString = '';
+
+            for(let i=0;i<libros.length;i++){
+                librosString += `<h1>${libros[i].titulo}</h1>
+            <p> ${libros[i].estado}</p>`
+            }
+            librosDiv.innerHTML = librosString
+        })
+
+    </script>
+
+
+</body>
+</html>

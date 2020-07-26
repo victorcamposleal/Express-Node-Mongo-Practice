@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>METODO GET POST</title>
+</head>
+
+<body>
+
+
+    <!-- practicando metodo tipo Post con formulario tipo encoded -->
+    <form action="/persona" method="POST">
+        <input type="text" name="nombre">
+        <input type="text" name="apellido">
+        <input type="text" name="edad">
+        <button>Enviar Formulario tipo Post</button>
+    </form>
+    <!-- practicando metodo tipo get con formulario -->
+    <form action="/persona">
+        <input type="text" name="nombre">
+        <input type="text" name="apellido">
+        <input type="text" name="edad">
+        <button>Enviar Formulario tipo get</button>
+    </form>
+
+    <!-- practicando el metodo tipo post con formulario tipo JSON -->
+    <input type="text" name="apellido" id="nombre">
+    <input type="text" name="apellido" id="apellido">
+    <input type="text" name="edad" id="edad">
+    <button onclick="enviarFormulario()">enviar formulario tipo post con fetch</button>
+
+
+
+    <script>
+        // hago la funcion para enviar el objeto creado
+        function  enviarFormulario() {
+          //cojo los valores del usuario 
+            let nombre = document.getElementById("nombre").value;
+            let apellido = document.getElementById("apellido").value;
+            let edad = document.getElementById("edad").value;
+            // los valores que cogi del usuario los pongo todos en un objeto para poder enviarlos al servidor
+            let persona = {
+                nombre:nombre,
+                apellido:apellido,
+                edad:edad
+
+            }
+
+            //se hace el fetch DE TIPO POST PARA ENVIAR COSAS AL SERVIDOR
+                fetch('/persona',{
+                method:'POST',
+                headers:{
+                    'Content-Type':'application/json'
+                },
+                //se hace un strigify para poder enviar el objeto al servidor
+                body: JSON.stringify(persona),
+            })
+    
+        .then(function (response) {
+            return response.json();
+            
+        })
+        .then(function(datos){
+
+            console.log(datos)
+
+        })
+
+
+    }
+
+        
+
+
+    </script>
+
+
+
+</body>
+
+</html>
